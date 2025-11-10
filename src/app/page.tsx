@@ -41,7 +41,7 @@ export default function HomePage() {
           <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
             <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-1 sm:gap-5">
               <Link
-                href="httpss://buy.stripe.com/tu-link-de-pago-aqui" // Placeholder
+                href="https://buy.stripe.com/7sY4gz1I2e4o6Hv3cr4Ja00" // Placeholder
                 className="flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-8 py-3 text-lg font-medium text-white shadow-sm hover:bg-blue-700"
               >
                 Comenzar (Acceso Anticipado)
@@ -364,7 +364,7 @@ export default function HomePage() {
 
               {/* Botón de Pago (El mismo que el del Hero) */}
               <Link
-                href="httpss://buy.stripe.com/tu-link-de-pago-aqui" // Placeholder
+                href="https://buy.stripe.com/7sY4gz1I2e4o6Hv3cr4Ja00" // Placeholder
                 className="mt-10 block w-full rounded-md bg-blue-600 px-3 py-3 text-center text-lg font-medium text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 Obtener Acceso Fundador
