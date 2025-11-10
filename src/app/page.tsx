@@ -4,7 +4,10 @@ import {
   CheckCircleIcon,
   ArrowPathIcon,
   ExclamationTriangleIcon,
-  SparklesIcon, // Icono para la sección de solución
+  SparklesIcon,
+  PaperAirplaneIcon,
+  PencilSquareIcon,
+  GiftIcon // Icono para la sección de solución
 } from '@heroicons/react/24/outline';
 
 export default function HomePage() {
@@ -131,6 +134,63 @@ export default function HomePage() {
             </p>
 
           </div>
+        </div>
+      </section>
+
+      {/* ----------------- */}
+      {/* How It Works     */}
+      {/* ----------------- */}
+      <section className="w-full bg-gray-50 py-20 lg:py-24">
+        <div className="mx-auto max-w-5xl px-6 lg:px-8">
+          
+          {/* Encabezado */}
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Listo para lanzar en 3 simples pasos
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-gray-600">
+              Olvídate de la complejidad de "blockchain". Esto es tan fácil como crear un post de Instagram.
+            </p>
+          </div>
+
+          {/* Pasos */}
+          <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
+            
+            {/* Paso 1: Diseña */}
+            <div className="flex flex-col items-center text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                <PencilSquareIcon className="h-8 w-8" />
+              </div>
+              <h3 className="mt-4 text-lg font-semibold text-gray-900">1. Diseña</h3>
+              <p className="mt-2 text-base text-gray-600">
+                Inicia sesión en tu dashboard. Sube tu imagen, ponle un nombre ("NFT Fundador") y describe sus beneficios ("15% de descuento siempre").
+              </p>
+            </div>
+
+            {/* Paso 2: Publica */}
+            <div className="flex flex-col items-center text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                <PaperAirplaneIcon className="h-8 w-8" />
+              </div>
+              <h3 className="mt-4 text-lg font-semibold text-gray-900">2. Publica</h3>
+              <p className="mt-2 text-base text-gray-600">
+                Genera tu página de reclamo pública con un solo clic. Obtendrás un link único (ej. `app.com/c/tucafe`) para compartir.
+              </p>
+            </div>
+
+            {/* Paso 3: Comparte */}
+            <div className="flex flex-col items-center text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                <GiftIcon className="h-8 w-8" />
+              </div>
+              <h3 className="mt-4 text-lg font-semibold text-gray-900">3. Comparte</h3>
+              <p className="mt-2 text-base text-gray-600">
+                Envía el link a tus clientes. Ellos conectan su wallet (Coinbase/MetaMask) y reclaman su NFT. **Tú pagas los centavos de 'gas', ellos no pagan nada.**
+              </p>
+            </div>
+
+          </div>
+
         </div>
       </section>
 
