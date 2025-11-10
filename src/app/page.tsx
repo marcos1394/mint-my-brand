@@ -1,10 +1,14 @@
 import Link from 'next/link';
-import { CheckCircleIcon, ArrowPathIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+// Importamos los iconos que usaremos
+import {
+  CheckCircleIcon,
+  ArrowPathIcon,
+  ExclamationTriangleIcon,
+  SparklesIcon, // Icono para la sección de solución
+} from '@heroicons/react/24/outline';
 
 export default function HomePage() {
   return (
-    // Hemos cambiado el "main" para que no centre todo,
-    // ya que ahora tendremos múltiples secciones.
     <main className="flex min-h-screen flex-col items-center">
       
       {/* ----------------- */}
@@ -40,13 +44,9 @@ export default function HomePage() {
       {/* ----------------- */}
       {/* Problem Section  */}
       {/* ----------------- */}
-      {/* ----------------- */}
-      {/* Problem Section  */}
-      {/* ----------------- */}
       <section className="w-full bg-gray-50 py-20 lg:py-24">
         <div className="mx-auto max-w-5xl px-6 lg:px-8">
           
-          {/* Encabezado de la sección */}
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Tus programas de lealtad actuales no funcionan
@@ -56,13 +56,10 @@ export default function HomePage() {
             </p>
           </div>
           
-          {/* Lista de problemas */}
           <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3">
             
-            {/* Problema 1: Tarjetas de Sellos */}
             <div className="flex flex-col items-center text-center">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-100 text-red-600">
-                {/* Usamos el icono importado */}
                 <CheckCircleIcon className="h-8 w-8" />
               </div>
               <h3 className="mt-4 text-lg font-semibold text-gray-900">Tarjetas de Sellos</h3>
@@ -71,10 +68,8 @@ export default function HomePage() {
               </p>
             </div>
             
-            {/* Problema 2: Listas de Email */}
             <div className="flex flex-col items-center text-center">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-100 text-red-600">
-                {/* Usamos el icono importado */}
                 <ArrowPathIcon className="h-8 w-8" />
               </div>
               <h3 className="mt-4 text-lg font-semibold text-gray-900">Listas de Email</h3>
@@ -83,10 +78,8 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Problema 3: Desconexión */}
             <div className="flex flex-col items-center text-center">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-100 text-red-600">
-                {/* Usamos el icono importado */}
                 <ExclamationTriangleIcon className="h-8 w-8" />
               </div>
               <h3 className="mt-4 text-lg font-semibold text-gray-900">Desconexión</h3>
@@ -94,6 +87,48 @@ export default function HomePage() {
                 Es imposible hacer que tus mejores clientes se sientan *realmente* especiales y recompensar su lealtad de forma tangible.
               </p>
             </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ----------------- */}
+      {/* Solution Section */}
+      {/* ----------------- */}
+      <section className="w-full bg-white py-20 lg:py-24">
+        <div className="mx-auto max-w-5xl px-6 lg:px-8">
+          <div className="flex flex-col items-center text-center">
+            
+            {/* Icono de la Solución */}
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+              <SparklesIcon className="h-10 w-10" />
+            </div>
+
+            {/* Encabezado de la sección */}
+            <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Presentamos Mint-My-Brand
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-gray-600">
+              El "Shopify" para Activos Digitales de Lealtad.
+            </p>
+
+            {/* Párrafo de la Solución */}
+            <p className="mt-6 max-w-2xl text-xl text-gray-700">
+              Transforma tus descuentos, cupones y membresías en{" "}
+              <span className="font-semibold text-gray-900">
+                activos digitales únicos (NFTs)
+              </span>{" "}
+              que tus clientes <span className="italic">poseen de verdad</span>.
+            </p>
+            <p className="mt-4 max-w-2xl text-lg text-gray-600">
+              Un NFT no es solo una imagen. Es una{" "}
+              <span className="font-semibold text-blue-600">
+                llave digital
+              </span>{" "}
+              a una comunidad exclusiva: la tuya. Tus clientes lo guardan en su
+              wallet de Coinbase o MetaMask y se convierte en un símbolo de
+              estatus que pueden presumir.
+            </p>
 
           </div>
         </div>
