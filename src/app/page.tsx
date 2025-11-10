@@ -10,7 +10,8 @@ import {
   GiftIcon,
   BuildingStorefrontIcon, 
   UsersIcon, 
-  TicketIcon,  // Icono para la sección de solución
+  TicketIcon,
+  CheckIcon  // Icono para la sección de solución
 } from '@heroicons/react/24/outline';
 import {
   SiShopify, // ¡NUEVO!
@@ -301,6 +302,79 @@ export default function HomePage() {
               <SiDiscord className="h-10 w-auto" />
             </div>
 
+          </div>
+        </div>
+      </section>
+      {/* ----------------- */}
+      {/* Pricing Section  */}
+      {/* ----------------- */}
+      <section className="w-full bg-white py-20 lg:py-24">
+        <div className="mx-auto max-w-5xl px-6 lg:px-8">
+          
+          {/* Encabezado */}
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Un precio simple para empezar hoy
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-gray-600">
+              Oferta especial de "Acceso Anticipado" por tiempo limitado.
+            </p>
+          </div>
+
+          {/* Tarjeta de Precio */}
+          <div className="mx-auto mt-16 max-w-lg">
+            <div className="rounded-2xl border-2 border-blue-600 p-8 shadow-xl">
+              <h3 className="text-xl font-semibold text-gray-900">
+                Plan Fundador
+              </h3>
+              <p className="mt-1 text-sm text-gray-600">
+                Para los primeros 100 negocios.
+              </p>
+              
+              {/* Precio */}
+              <div className="mt-6 flex items-baseline gap-x-2">
+                <span className="text-5xl font-bold tracking-tight text-gray-900">
+                  $39
+                </span>
+                <span className="text-xl font-semibold text-gray-600">/mes</span>
+                <span className="ml-2 text-lg font-medium text-red-500 line-through">
+                  $79
+                </span>
+              </div>
+              
+              {/* Lista de Beneficios */}
+              <ul role="list" className="mt-8 space-y-3 text-base text-gray-700">
+                <li className="flex gap-x-3">
+                  <CheckIcon className="h-6 w-5 flex-none text-blue-600" aria-hidden="true" />
+                  Colecciones de NFTs ilimitadas
+                </li>
+                <li className="flex gap-x-3">
+                  <CheckIcon className="h-6 w-5 flex-none text-blue-600" aria-hidden="true" />
+                  Páginas de reclamo personalizables
+                </li>
+                <li className="flex gap-x-3">
+                  <CheckIcon className="h-6 w-5 flex-none text-blue-600" aria-hidden="true" />
+                  Hasta 1,000 clientes (holders)
+                </li>
+                <li className="flex gap-x-3">
+                  <CheckIcon className="h-6 w-5 flex-none text-blue-600" aria-hidden="true" />
+                  Soporte prioritario 24/7
+                </li>
+              </ul>
+
+              {/* Botón de Pago (El mismo que el del Hero) */}
+              <Link
+                href="httpss://buy.stripe.com/tu-link-de-pago-aqui" // Placeholder
+                className="mt-10 block w-full rounded-md bg-blue-600 px-3 py-3 text-center text-lg font-medium text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+              >
+                Obtener Acceso Fundador
+              </Link>
+
+              <p className="mt-6 text-sm text-center text-gray-500">
+                Garantía de devolución de 14 días. Sin preguntas.
+              </p>
+
+            </div>
           </div>
         </div>
       </section>
