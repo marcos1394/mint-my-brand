@@ -7,7 +7,10 @@ import {
   SparklesIcon,
   PaperAirplaneIcon,
   PencilSquareIcon,
-  GiftIcon // Icono para la sección de solución
+  GiftIcon,
+  BuildingStorefrontIcon, 
+  UsersIcon, 
+  TicketIcon,  // Icono para la sección de solución
 } from '@heroicons/react/24/outline';
 
 export default function HomePage() {
@@ -189,6 +192,72 @@ export default function HomePage() {
               </p>
             </div>
 
+          </div>
+
+        </div>
+      </section>
+      {/* ----------------- */}
+      {/* Use Cases Section */}
+      {/* ----------------- */}
+      <section className="w-full bg-white py-20 lg:py-24">
+        <div className="mx-auto max-w-5xl px-6 lg:px-8">
+          
+          {/* Encabezado */}
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              ¿Qué puedes crear?
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-gray-600">
+              Un NFT de lealtad es un "contenedor" para tus ideas.
+            </p>
+          </div>
+
+          {/* Lista de Casos de Uso */}
+          <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3">
+
+            {/* Caso 1: E-commerce */}
+            <div className="flex flex-col rounded-lg border border-gray-200 p-6 shadow-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                <BuildingStorefrontIcon className="h-6 w-6" />
+              </div>
+              <h3 className="mt-4 text-lg font-semibold text-gray-900">Para E-commerce y Tiendas</h3>
+              <p className="mt-2 text-base text-gray-600">
+                Crea el "NFT de Acceso VIP". Otorga acceso anticipado a nuevas colecciones o ventas privadas solo a los que posean el NFT.
+              </p>
+            </div>
+
+            {/* Caso 2: Cafés y Restaurantes */}
+            <div className="flex flex-col rounded-lg border border-gray-200 p-6 shadow-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                <TicketIcon className="h-6 w-6" />
+              </div>
+              <h3 className="mt-4 text-lg font-semibold text-gray-900">Para Cafés y Restaurantes</h3>
+              <p className="mt-2 text-base text-gray-600">
+                Lanza el "NFT Fundador". Un club de 100 fans leales que obtienen un 10% de descuento de por vida o un café gratis al mes.
+              </p>
+            </div>
+
+            {/* Caso 3: Creadores y Comunidades */}
+            <div className="flex flex-col rounded-lg border border-gray-200 p-6 shadow-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                <UsersIcon className="h-6 w-6" />
+              </div>
+              <h3 className="mt-4 text-lg font-semibold text-gray-900">Para Creadores y Comunidades</h3>
+              <p className="mt-2 text-base text-gray-600">
+                Úsalo como una llave de acceso digital. Da acceso a un canal de Discord privado, a contenido exclusivo o a un evento en Zoom.
+              </p>
+            </div>
+
+          </div>
+
+          {/* Beneficio Extra */}
+          <div className="mt-16 text-center">
+            <p className="text-xl font-medium text-gray-900">
+              El mejor beneficio: Tus clientes presumen su NFT.
+            </p>
+            <p className="mt-2 text-lg text-gray-600">
+              Se convierte en **marketing orgánico** que ellos hacen por ti.
+            </p>
           </div>
 
         </div>
