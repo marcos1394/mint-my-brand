@@ -12,6 +12,12 @@ import {
   UsersIcon, 
   TicketIcon,  // Icono para la sección de solución
 } from '@heroicons/react/24/outline';
+import {
+  SiShopify, // ¡NUEVO!
+  SiStripe,  // Se queda
+  SiGoogle,  // ¡NUEVO!
+  SiDiscord, // ¡NUEVO!
+} from 'react-icons/si';
 
 export default function HomePage() {
   return (
@@ -260,6 +266,42 @@ export default function HomePage() {
             </p>
           </div>
 
+        </div>
+      </section>
+     {/* ----------------- */}
+      {/* Social Proof     */}
+      {/* ----------------- */}
+      <section className="w-full bg-gray-900 py-20 lg:py-24">
+        <div className="mx-auto max-w-5xl px-6 lg:px-8">
+
+          <h2 className="text-center text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            Integrado con las herramientas que ya usas
+          </h2>
+
+          {/* Fila de Logos - ¡ACTUALIZADA CON TU SUGERENCIA! */}
+          <div className="mx-auto mt-16 grid max-w-lg grid-cols-2 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-4 lg:mx-0 lg:max-w-none">
+            
+            {/* Logo de Shopify */}
+            <div className="flex justify-center text-white" title="Shopify">
+              <SiShopify className="h-10 w-auto" />
+            </div>
+
+            {/* Logo de Stripe */}
+            <div className="flex justify-center text-white" title="Stripe">
+              <SiStripe className="h-10 w-auto" />
+            </div>
+            
+            {/* Logo de Google */}
+            <div className="flex justify-center text-white" title="Google">
+              <SiGoogle className="h-10 w-auto" />
+            </div>
+
+            {/* Logo de Discord */}
+            <div className="flex justify-center text-white" title="Discord">
+              <SiDiscord className="h-10 w-auto" />
+            </div>
+
+          </div>
         </div>
       </section>
 
