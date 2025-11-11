@@ -9,13 +9,17 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@coinbase/onchainkit": "^1.1.2",
     "@heroicons/react": "^2.2.0",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.81.0",
+    "@tanstack/react-query": "^5.90.7",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "viem": "^2.38.6",
+    "wagmi": "^2.19.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
