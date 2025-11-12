@@ -1,13 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
-import { cookies } from 'next/headers' // Importamos 'cookies'
-import ImageUploader from './image-uploader' // Importamos el componente de subida
-import DeployButton from './deploy-button' // Importamos el botón de despliegue
-import UpdateCollectionForm from './UpdateCollectionForm' // ¡Importamos el nombre correcto!
+import ImageUploader from './image-uploader'
+import DeployButton from './deploy-button'
+import UpdateCollectionForm from './UpdateCollectionForm'
+import DeleteButton from './DeleteButton' // ¡NUEVA IMPORTACIÓN!
+
 /**
- * Esta es la "prop" que Next.js 16/Turbopack le pasa a una página dinámica
- * (¡params es una Promesa!)
+ * Esta es la "prop" que Next.js 16/Turbopack le pasa
  */
 interface CollectionDetailsPageProps {
   params: Promise<{ id: string }> 
@@ -16,76 +17,58 @@ interface CollectionDetailsPageProps {
 /**
  * Esta es la página de "Administrar Colección"
  * Es un "Componente de Servidor" (Server Component).
- * Su trabajo es:
- * 1. Obtener el 'id' de la URL (desenvolviendo la promesa).
- * 2. Obtener el 'user' actual (para seguridad).
- * 3. Buscar la colección específica que pertenezca a ESE usuario.
- * 4. Renderizar los componentes de cliente (Uploader, Deployer) con esos datos.
+ * Renderiza "caparazones" y pasa datos a los
+ * Componentes de Cliente interactivos.
  */
 export default async function CollectionDetailsPage({ params }: CollectionDetailsPageProps) {
   
-  // 1. "Desenvolvemos" la promesa de params (la lección aprendida)
+  // 1. "Desenvolvemos" la promesa de params
   const { id } = await params 
   
-  // 2. Creamos el cliente de Supabase (con el patrón profesional)
+  // 2. Creamos el cliente de Supabase
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
   
   // 3. Obtenemos al usuario (para nuestra consulta de seguridad)
-  //    El layout.tsx ya manejó el 'redirect' si no hay usuario,
-  //    pero lo necesitamos para el user.id
   const { data: { user } } = await supabase.auth.getUser()
-
-  // ¡Defensa en profundidad! Si el usuario es nulo por alguna razón, no seguimos.
-  if (!user) {
-    return notFound()
-  }
+  if (!user) { notFound() } // Seguridad: El layout ya lo hizo, pero esto es defensa en profundidad
   
-  // 4. Buscamos la colección en la base de datos
+  // 4. Buscamos la colección (seguridad explícita)
   const { data: collection, error: collectionError } = await supabase
     .from('collections')
-    .select() // select() o select('*') es lo mismo aquí
-    .eq('id', id) // "Donde el 'id' sea el de la URL"
-    .eq('user_id', user.id) // "Y donde el dueño sea el usuario logueado"
+    .select()
+    .eq('id', id)
+    .eq('user_id', user.id) // Solo el dueño puede ver esta página
     .single()
 
-  // 5. Manejamos el error (RLS)
-  //    Si 'collection' es nulo, significa que no se encontró
-  //    o que el usuario no es el dueño.
+  // 5. Si no existe o no es el dueño, 404
   if (collectionError || !collection) {
-    notFound() // Muestra la página de "No Encontrado" (404)
+    notFound() 
   }
 
-  // 6. ¡NUEVA LÓGICA DE VALIDACIÓN!
-  //    Creamos la variable booleana que le pasaremos al botón
-  //    '!!' (doble negación) convierte (string o null) a (true o false)
+  // 6. Variable de estado para el botón de despliegue
   const isReadyToDeploy = !!collection.image_url
 
   // 7. ¡Éxito! Renderizamos la página
   return (
-    // ¡No hay <main>! El layout.tsx (el "padre") ya lo tiene.
+    // El 'layout.tsx' padre ya nos da el <main> y el padding
+    // Usamos 'space-y-10' para separar nuestras "tarjetas"
     <div className="w-full max-w-4xl space-y-10">
       
-      {/* Sección de Encabezado */}
+      {/* Tarjeta 1: Encabezado */}
       <div>
         <h1 className="text-3xl font-bold">
           Administrar Colección: {collection.name}
         </h1>
         <p className="mt-2 text-gray-600">
-          {collection.description || 'Esta colección aún no tiene descripción.'}
+          {collection.description || 'Actualiza los detalles de tu colección.'}
         </p>
       </div>
 
-      {/* --- ¡NUEVA SECCIÓN! --- */}
-      {/* Formulario para Actualizar Nombre y Descripción */}
-      <div className="rounded-lg border border-gray-200 p-6 shadow">
-        <h2 className="text-xl font-semibold">Detalles de la Colección</h2>
-        <div className="mt-4">
-          <UpdateCollectionForm collection={collection} />
-        </div>
-      </div>
+      {/* Tarjeta 2: Formulario de Actualizar Detalles */}
+      <UpdateCollectionForm collection={collection} />
 
-      {/* Sección de Subida de Imagen */}
+      {/* Tarjeta 3: Formulario de Subir Imagen */}
       <div className="rounded-lg border border-gray-200 p-6 shadow">
         <h2 className="text-xl font-semibold">Imagen del NFT</h2>
         <p className="mt-2 text-sm text-gray-500">
@@ -96,7 +79,7 @@ export default async function CollectionDetailsPage({ params }: CollectionDetail
         </div>
       </div>
       
-      {/* Sección de Despliegue (Estado de la Colección) */}
+      {/* Tarjeta 4: Sección de Despliegue (Estado de la Colección) */}
       <div className="rounded-lg border p-6 shadow">
         {collection.contract_address ? (
           
@@ -131,7 +114,6 @@ export default async function CollectionDetailsPage({ params }: CollectionDetail
               Tu colección está guardada, pero aún no existe en la blockchain.
             </p>
             <div className="mt-4">
-              {/* ¡Le pasamos ambas props a nuestro botón de cliente! */}
               <DeployButton 
                 collectionId={collection.id} 
                 isReadyToDeploy={isReadyToDeploy} 
@@ -139,6 +121,22 @@ export default async function CollectionDetailsPage({ params }: CollectionDetail
             </div>
           </div>
         )}
+      </div>
+
+      {/* --- ¡NUEVA TARJETA! Tarjeta 5: "Zona de Peligro" --- */}
+      <div className="rounded-lg border border-red-300 bg-red-50 p-6 shadow">
+        <h2 className="text-xl font-semibold text-red-900">Zona de Peligro</h2>
+        <p className="mt-2 text-sm text-red-700">
+          Esta acción es irreversible. Borrará tu colección de la base de datos
+          (aunque el contrato en la blockchain, si fue desplegado, es permanente).
+        </p>
+        <div className="mt-4">
+          {/* Le pasamos el 'id' y el 'name' al botón de borrado */}
+          <DeleteButton 
+            collectionId={collection.id} 
+            collectionName={collection.name} 
+          />
+        </div>
       </div>
 
     </div>
