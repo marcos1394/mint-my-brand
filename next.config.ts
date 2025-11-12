@@ -1,18 +1,22 @@
-// Importamos el tipo 'NextConfig' de Next.js
 import type { NextConfig } from 'next'
 
-// Definimos nuestra configuración y le asignamos el tipo 'NextConfig'
+// Definimos nuestra configuración
 const nextConfig: NextConfig = {
+  
+  // 1. La configuración de 'images' (¡ESTO SÍ ES CORRECTO!)
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'btzaftdavzsfhklajkyz.supabase.co', // ¡Este es tu hostname!
+        hostname: 'btzaftdavzsfhklajkyz.supabase.co',
         port: '',
-        pathname: '**', // Permitimos cualquier ruta dentro de ese hostname
+        pathname: '**',
       },
     ],
   },
+
+  // 2. ¡ELIMINAMOS EL BLOQUE 'proxy' DE AQUÍ!
+  //    Mi instrucción anterior fue incorrecta.
 }
 
 // Exportamos la configuración
