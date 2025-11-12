@@ -69,7 +69,7 @@ export async function POST(request: Request) {
     const args = [
       collection.name,          // 1. name
       collection.slug.toUpperCase().substring(0, 5), // 2. symbol
-      `https://api.mintmybrand.com/metadata/${collection.id}/` // 3. baseURI
+      `https://mint-my-brand-git-develop-marcos1394s-projects.vercel.app/api/metadata/${collection.id}/`
     ]
     // --- FIN DE LA CORRECCIÓN ---
 
