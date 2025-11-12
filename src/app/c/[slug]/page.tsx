@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server' // Cliente de Servidor
 import { notFound } from 'next/navigation'
 import Image from 'next/image' // Para mostrar la imagen del NFT
 import Link from 'next/link'
+import ClaimButton from './claim-button' // ¡AQUÍ ESTÁ LA NUEVA IMPORTACIÓN!
 
 // 1. Definimos las props (¡sabemos que 'params' es una Promesa!)
 interface PublicClaimPageProps {
@@ -17,7 +18,6 @@ export default async function PublicClaimPage(props: PublicClaimPageProps) {
   const supabase = createClient()
 
   // 4. Buscamos la colección usando el 'slug' de la URL
-  //    ¡Esto funciona gracias a nuestra nueva política de "Lectura Pública"!
   const { data: collection, error: collectionError } = await supabase
     .from('collections')
     .select() // "Selecciona todo"
@@ -58,13 +58,13 @@ export default async function PublicClaimPage(props: PublicClaimPageProps) {
             {collection.description || 'Una colección especial.'}
           </p>
 
-          {/* El Botón de Reclamo (Aún no hace nada) */}
-          <button
-            disabled // Lo deshabilitamos por ahora
-            className="mt-6 w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-3 font-medium text-white shadow-sm disabled:bg-gray-400"
-          >
-            Reclamar mi NFT (Próximamente)
-          </button>
+          {/* --- ¡AQUÍ ESTÁ EL CAMBIO! --- */}
+          <div className="mt-6">
+            {/* Reemplazamos el botón deshabilitado con nuestro componente interactivo
+                y le pasamos el ID de la colección */}
+            <ClaimButton collectionId={collection.id} />
+          </div>
+          {/* --- FIN DEL CAMBIO --- */}
         </div>
 
       </div>
