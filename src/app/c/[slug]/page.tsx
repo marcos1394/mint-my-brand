@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image' // Para mostrar la imagen del NFT
 import Link from 'next/link'
 import ClaimButton from './claim-button' // ¡AQUÍ ESTÁ LA NUEVA IMPORTACIÓN!
+import { cookies } from 'next/headers' // ¡NUEVO! Importamos cookies
+
 
 // 1. Definimos las props (¡sabemos que 'params' es una Promesa!)
 interface PublicClaimPageProps {
@@ -13,9 +15,10 @@ export default async function PublicClaimPage(props: PublicClaimPageProps) {
   
   // 2. "Desenvolvemos" la promesa (¡la lección aprendida!)
   const { slug } = await props.params
+  const cookieStore = cookies()
 
   // 3. Creamos un cliente de Supabase (anónimo)
-  const supabase = createClient()
+  const supabase = createClient(cookieStore)
 
   // 4. Buscamos la colección usando el 'slug' de la URL
   const { data: collection, error: collectionError } = await supabase
