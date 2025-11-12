@@ -1,42 +1,40 @@
-import { createClient } from '@supabase/supabase-js' // ¡Importamos el cliente JS estándar!
+import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 import { type NextRequest } from 'next/server'
 
-// 1. Creamos un cliente de Supabase (público) usando las variables de entorno
-//    Esto es seguro porque nuestra política RLS protege los datos.
+// 1. Creamos el cliente de Supabase (público)
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
 
-/**
- * Esta es la API PÚBLICA de Metadatos.
- * Es la que las wallets y mercados de NFT (como OpenSea)
- * llamarán para saber qué imagen y nombre tiene un NFT.
- */
+// 2. Definimos las "props" que Next.js 16 pasa
+interface MetadataApiProps {
+  params: Promise<{ collectionId: string; tokenId: string }> // ¡LA CLAVE! params es una Promesa
+}
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { collectionId: string; tokenId: string } }
+  { params }: MetadataApiProps // Usamos nuestra nueva interface
 ) {
-  const { collectionId, tokenId } = params
 
-  // 1. Buscamos la colección en la base de datos
-  //    (Esto usa la política RLS de "Lectura Pública" que creamos)
+  // 3. ¡LA CORRECCIÓN! "Desenvolvemos" la promesa
+  const { collectionId, tokenId } = await params
+
+  // 4. Buscamos la colección
   const { data: collection, error } = await supabase
     .from('collections')
     .select('name, description, image_url') // Solo pedimos los datos que necesitamos
-    .eq('id', collectionId)
+    .eq('id', collectionId) // Usamos el 'collectionId' desenvuelto
     .single()
 
-  // 2. Si la colección no existe (o no tiene imagen), devolvemos un error
+  // 5. Si la colección no existe (o no tiene imagen), devolvemos un error
   if (error || !collection || !collection.image_url) {
     console.error('Error de metadatos:', error?.message || 'Colección o imagen no encontrada')
     return NextResponse.json({ error: 'Metadatos no encontrados' }, { status: 404 })
   }
 
-  // 3. ¡Éxito! Construimos el JSON de Metadatos (Estándar de OpenSea)
-  //    Aquí le decimos a la wallet: "El nombre es 'Colección #1',
-  //    la descripción es '...', y la IMAGEN es la que el usuario subió".
+  // 6. ¡Éxito! Construimos el JSON de Metadatos (Estándar de OpenSea)
   const metadata = {
     name: `${collection.name} #${tokenId}`,
     description: collection.description || 'Un NFT de lealtad especial',
@@ -49,6 +47,6 @@ export async function GET(
     ]
   }
 
-  // 4. Devolvemos el archivo JSON
+  // 7. Devolvemos el archivo JSON
   return NextResponse.json(metadata)
 }
