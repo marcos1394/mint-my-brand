@@ -2,15 +2,17 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import type { CookieOptions } from '@supabase/ssr'
 
-export async function middleware(request: NextRequest) {
+// --- ¡CORRECCIÓN #1! ---
+// Renombramos la función de "middleware" a "proxy"
+// Esto soluciona el error de "build" de Vercel
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   })
 
-  // Creamos un cliente de Supabase especial para el servidor (middleware)
-  // que sabe cómo manejar las cookies
+  // Esta parte de Supabase (el "motor") estaba perfecta
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -20,52 +22,32 @@ export async function middleware(request: NextRequest) {
           return request.cookies.get(name)?.value
         },
         set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          })
+          try {
+            request.cookies.set({ name, value, ...options })
+            response = NextResponse.next({ request: { headers: request.headers } })
+            response.cookies.set({ name, value, ...options })
+          } catch (error) {}
         },
         remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
+          try {
+            request.cookies.set({ name, value: '', ...options })
+            response = NextResponse.next({ request: { headers: request.headers } })
+            response.cookies.set({ name, value: '', ...options })
+          } catch (error) {}
         },
       },
     }
   )
 
-  // Esta línea es la magia:
-  // Refresca la sesión del usuario (cookie) si ha expirado.
+  // Esto también estaba perfecto
   await supabase.auth.getSession()
 
-  // Devolvemos la respuesta (con la cookie de sesión actualizada)
   return response
 }
 
-// Configuración para que el middleware se ejecute en todas las rutas
+// --- ¡CORRECCIÓN #2! ---
+// La configuración 'config' (con el 'matcher') SÍ va en este archivo,
+// ¡no en next.config.ts!
 export const config = {
   matcher: [
     /*
