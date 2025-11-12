@@ -6,6 +6,7 @@ import ImageUploader from './image-uploader'
 import DeployButton from './deploy-button'
 import UpdateCollectionForm from './UpdateCollectionForm'
 import DeleteButton from './DeleteButton' // ¡NUEVA IMPORTACIÓN!
+import RecordActivityForm from './RecordActivityForm' // ¡NUEVA IMPORTACIÓN!
 
 /**
  * Esta es la "prop" que Next.js 16/Turbopack le pasa
@@ -122,6 +123,12 @@ export default async function CollectionDetailsPage({ params }: CollectionDetail
           </div>
         )}
       </div>
+
+      {/* --- ¡NUEVA TARJETA! Tarjeta 5: "Registrar Actividad" --- */}
+{/* Solo mostramos esta tarjeta SI la colección ya fue desplegada */}
+{collection.contract_address && (
+  <RecordActivityForm collectionId={collection.id} />
+)}
 
       {/* --- ¡NUEVA TARJETA! Tarjeta 5: "Zona de Peligro" --- */}
       <div className="rounded-lg border border-red-300 bg-red-50 p-6 shadow">
