@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { cookies } from 'next/headers' // Importamos 'cookies'
 import ImageUploader from './image-uploader' // Importamos el componente de subida
 import DeployButton from './deploy-button' // Importamos el botón de despliegue
-
+import UpdateCollectionForm from './UpdateCollectionForm' // ¡Importamos el nombre correcto!
 /**
  * Esta es la "prop" que Next.js 16/Turbopack le pasa a una página dinámica
  * (¡params es una Promesa!)
@@ -74,6 +74,15 @@ export default async function CollectionDetailsPage({ params }: CollectionDetail
         <p className="mt-2 text-gray-600">
           {collection.description || 'Esta colección aún no tiene descripción.'}
         </p>
+      </div>
+
+      {/* --- ¡NUEVA SECCIÓN! --- */}
+      {/* Formulario para Actualizar Nombre y Descripción */}
+      <div className="rounded-lg border border-gray-200 p-6 shadow">
+        <h2 className="text-xl font-semibold">Detalles de la Colección</h2>
+        <div className="mt-4">
+          <UpdateCollectionForm collection={collection} />
+        </div>
       </div>
 
       {/* Sección de Subida de Imagen */}
