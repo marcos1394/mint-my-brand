@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { type NextRequest } from 'next/server'
+import { cookies } from 'next/headers' // ¡NUEVO! Importamos cookies
 
 export async function GET(request: NextRequest) {
   
@@ -42,11 +43,13 @@ export async function GET(request: NextRequest) {
   // --- FIN DE LA CORRECIÓN ---
 
   if (code) {
-    const supabase = createClient()
+    // ¡LA CORRECCIÓN!
+    // 1. Obtenemos el cookieStore
+    const cookieStore = cookies()
+    // 2. Se lo pasamos a createClient
+    const supabase = createClient(cookieStore)
+    
     await supabase.auth.exchangeCodeForSession(code)
-    console.log('5. Sesión de Supabase intercambiada.')
-  } else {
-    console.log('5. No se encontró "code" en la URL.')
   }
 
   // 6. Redirigimos al Dashboard usando el origin LIMPIO

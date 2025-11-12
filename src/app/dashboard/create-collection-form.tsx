@@ -1,68 +1,54 @@
-// PASO 1: Indicar que este es un "Componente de Cliente"
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client' // ¡El cliente del NAVEGADOR!
-import { type User } from '@supabase/supabase-js' // Importamos el tipo 'User'
+import { useRouter } from 'next/navigation' // ¡NUEVO! Para redirigir
 
-// PASO 2: Definir las "props" que recibirá
-// Necesitamos que el "Servidor" nos pase el ID del usuario para la seguridad.
-interface CreateCollectionFormProps {
-  user: User
-}
+// (El componente 'User' ya no es necesario aquí, lo quitamos)
+// interface CreateCollectionFormProps {
+//   user: User
+// }
 
-// Un "slug" es una versión de un texto para URLs (ej: "Mi Café" -> "mi-cafe")
-const slugify = (text: string) =>
-  text
-    .toLowerCase()
-    .replace(/\s+/g, '-') // Reemplaza espacios con -
-    .replace(/[^\w-]+/g, '') // Quita caracteres especiales
-    .replace(/--+/g, '-') // Reemplaza múltiples - con uno solo
-    .replace(/^-+/, '') // Quita - del inicio
-    .replace(/-+$/, '') // Quita - del final
+// (La función 'slugify' ya no está aquí, la movimos al servidor)
 
-export default function CreateCollectionForm({ user }: CreateCollectionFormProps) {
-  // PASO 3: Estados del formulario
+export default function CreateCollectionForm() {
+  const router = useRouter() // Inicializamos el router
+
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'error' | 'success'; content: string } | null>(null)
 
-  // PASO 4: Función para manejar el envío
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     setIsLoading(true)
     setMessage(null)
 
-    // Creamos el slug a partir del nombre
-    const slug = slugify(name)
-    if (!slug) {
-      setMessage({ type: 'error', content: 'El nombre debe ser válido.' })
-      setIsLoading(false)
-      return
-    }
-
-    // Creamos una instancia de Supabase (del navegador)
-    const supabase = createClient()
-
-    // PASO 5: Insertar en la base de datos
-    const { error } = await supabase.from('collections').insert({
-      user_id: user.id, // ¡Seguridad! El ID viene del servidor
-      name: name,
-      description: description,
-      slug: slug,
+    // ¡NUEVA LÓGICA! Llamamos a nuestra propia API de Web2
+    const response = await fetch('/api/collections', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
+        description: description,
+      }),
     })
 
+    const data = await response.json()
     setIsLoading(false)
 
-    if (error) {
-      console.error('Error creating collection:', error.message)
-      setMessage({ type: 'error', content: `Error: ${error.message}` })
+    if (!response.ok) {
+      // Si la API devuelve un error
+      console.error('Error al crear colección:', data.error)
+      setMessage({ type: 'error', content: `Error: ${data.error}` })
     } else {
-      setMessage({ type: 'success', content: '¡Colección creada con éxito!' })
-      // Limpiamos el formulario
-      setName('')
-      setDescription('')
+      // ¡ÉXITO!
+      setMessage({ type: 'success', content: '¡Colección creada! Redirigiendo...' })
+
+      // ¡LA REDIRECCIÓN!
+      // data.id es el ID de la colección que nuestra API nos devolvió
+      router.push(`/dashboard/collections/${data.id}`)
     }
   }
 
@@ -73,7 +59,6 @@ export default function CreateCollectionForm({ user }: CreateCollectionFormProps
     >
       <h2 className="text-xl font-semibold">Crear Nueva Colección</h2>
 
-      {/* Campo de Nombre */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
           Nombre de la Colección (Requerido)
@@ -89,7 +74,6 @@ export default function CreateCollectionForm({ user }: CreateCollectionFormProps
         />
       </div>
 
-      {/* Campo de Descripción */}
       <div>
         <label htmlFor="description" className="block text-sm font-medium text-gray-700">
           Descripción (Opcional)
@@ -104,7 +88,6 @@ export default function CreateCollectionForm({ user }: CreateCollectionFormProps
         />
       </div>
 
-      {/* Botón de Enviar */}
       <button
         type="submit"
         disabled={isLoading}
@@ -113,7 +96,6 @@ export default function CreateCollectionForm({ user }: CreateCollectionFormProps
         {isLoading ? 'Creando...' : 'Crear Colección'}
       </button>
 
-      {/* Mensajes de Éxito/Error */}
       {message && (
         <div 
           className={`mt-4 rounded p-3 text-center text-sm ${
